@@ -102,36 +102,36 @@ else ifeq ($(platform), qnx)
 # PS3
 else ifeq ($(platform), ps3)
 	TARGET := $(TARGET_NAME)_libretro_$(platform).a
-	CC = $(CELL_SDK)/host-win32/ppu/bin/ppu-lv2-gcc.exe
-	CXX = $(CELL_SDK)/host-win32/ppu/bin/ppu-lv2-g++.exe
-	AR = $(CELL_SDK)/host-win32/ppu/bin/ppu-lv2-ar.exe
+	CC ?= $(CELL_SDK)/host-win32/ppu/bin/ppu-lv2-gcc.exe
+	CXX ?= $(CELL_SDK)/host-win32/ppu/bin/ppu-lv2-g++.exe
+	AR ?= $(CELL_SDK)/host-win32/ppu/bin/ppu-lv2-ar.exe
 	PLATFORM_DEFINES := -D__CELLOS_LV2__
 	STATIC_LINKING = 1
 
 # sncps3
 else ifeq ($(platform), sncps3)
 	TARGET := $(TARGET_NAME)_libretro_ps3.a
-	CC = $(CELL_SDK)/host-win32/sn/bin/ps3ppusnc.exe
-	CXX = $(CELL_SDK)/host-win32/sn/bin/ps3ppusnc.exe
-	AR = $(CELL_SDK)/host-win32/sn/bin/ps3snarl.exe
+	CC ?= $(CELL_SDK)/host-win32/sn/bin/ps3ppusnc.exe
+	CXX ?= $(CELL_SDK)/host-win32/sn/bin/ps3ppusnc.exe
+	AR ?= $(CELL_SDK)/host-win32/sn/bin/ps3snarl.exe
 	PLATFORM_DEFINES := -D__CELLOS_LV2__
 	STATIC_LINKING = 1
 
 # Lightweight PS3 Homebrew SDK
 else ifeq ($(platform), psl1ght)
 	TARGET := $(TARGET_NAME)_libretro_$(platform).a
-	CC = $(PS3DEV)/ppu/bin/ppu-gcc$(EXE_EXT)
-	CXX = $(PS3DEV)/ppu/bin/ppu-g++$(EXE_EXT)
-	AR = $(PS3DEV)/ppu/bin/ppu-ar$(EXE_EXT)
+	CC ?= $(PS3DEV)/ppu/bin/ppu-gcc$(EXE_EXT)
+	CXX ?= $(PS3DEV)/ppu/bin/ppu-g++$(EXE_EXT)
+	AR ?= $(PS3DEV)/ppu/bin/ppu-ar$(EXE_EXT)
 	PLATFORM_DEFINES := -D__CELLOS_LV2__
 	STATIC_LINKING = 1
 
 # PSP
 else ifeq ($(platform), psp1)
 	TARGET := $(TARGET_NAME)_libretro_$(platform).a
-	CC = psp-gcc$(EXE_EXT)
-	CXX = psp-g++$(EXE_EXT)
-	AR = psp-ar$(EXE_EXT)
+	CC ?= psp-gcc$(EXE_EXT)
+	CXX ?= psp-g++$(EXE_EXT)
+	AR ?= psp-ar$(EXE_EXT)
 	PLATFORM_DEFINES := -DPSP -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
 	CFLAGS += -G0
 	CXXFLAGS += -G0
@@ -151,9 +151,9 @@ else ifeq ($(platform), vita)
 # CTR(3DS)
 else ifeq ($(platform), ctr)
 	TARGET := $(TARGET_NAME)_libretro_$(platform).a
-	CC = $(DEVKITARM)/bin/arm-none-eabi-gcc$(EXE_EXT)
-	CXX = $(DEVKITARM)/bin/arm-none-eabi-g++$(EXE_EXT)
-	AR = $(DEVKITARM)/bin/arm-none-eabi-ar$(EXE_EXT)
+	CC ?= $(DEVKITARM)/bin/arm-none-eabi-gcc$(EXE_EXT)
+	CXX ?= $(DEVKITARM)/bin/arm-none-eabi-g++$(EXE_EXT)
+	AR ?= $(DEVKITARM)/bin/arm-none-eabi-ar$(EXE_EXT)
 	PLATFORM_DEFINES := -DARM11 -D_3DS -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
 	CFLAGS += -march=armv6k -mtune=mpcore -mfloat-abi=hard
 	CFLAGS += -Wall -mword-relocations
@@ -164,9 +164,9 @@ else ifeq ($(platform), ctr)
 # DOS
 else ifeq ($(platform), dos)
 	TARGET := $(TARGET_NAME)_libretro_$(platform).a
-	CC = i686-pc-msdosdjgpp-gcc
-	CXX = i686-pc-msdosdjgpp-g++
-	AR = i686-pc-msdosdjgpp-ar
+	CC ?= i686-pc-msdosdjgpp-gcc
+	CXX ?= i686-pc-msdosdjgpp-g++
+	AR ?= i686-pc-msdosdjgpp-ar
 	CFLAGS += -march=i386
 	CFLAGS += -Wall
 	CFLAGS += -fomit-frame-pointer -ffast-math
@@ -215,9 +215,9 @@ else ifeq ($(platform), xenon)
 # Nintendo Game Cube
 else ifeq ($(platform), ngc)
 	TARGET := $(TARGET_NAME)_libretro_$(platform).a
-	CC = $(DEVKITPPC)/bin/powerpc-eabi-gcc$(EXE_EXT)
-	CXX = $(DEVKITPPC)/bin/powerpc-eabi-g++$(EXE_EXT)
-	AR = $(DEVKITPPC)/bin/powerpc-eabi-gcc-ar$(EXE_EXT)
+	CC ?= $(DEVKITPPC)/bin/powerpc-eabi-gcc$(EXE_EXT)
+	CXX ?= $(DEVKITPPC)/bin/powerpc-eabi-g++$(EXE_EXT)
+	AR ?= $(DEVKITPPC)/bin/powerpc-eabi-gcc-ar$(EXE_EXT)
 	PLATFORM_DEFINES += -DGEKKO -DHW_DOL -mrvl -mcpu=750 -meabi -mhard-float
 	PLATFORM_DEFINES += -U__INT32_TYPE__ -U __UINT32_TYPE__ -D__INT32_TYPE__=int
 	STATIC_LINKING = 1
@@ -225,9 +225,9 @@ else ifeq ($(platform), ngc)
 # Nintendo Wii
 else ifeq ($(platform), wii)
 	TARGET := $(TARGET_NAME)_libretro_$(platform).a
-	CC = $(DEVKITPPC)/bin/powerpc-eabi-gcc$(EXE_EXT)
-	CXX = $(DEVKITPPC)/bin/powerpc-eabi-g++$(EXE_EXT)
-	AR = $(DEVKITPPC)/bin/powerpc-eabi-gcc-ar$(EXE_EXT)
+	CC ?= $(DEVKITPPC)/bin/powerpc-eabi-gcc$(EXE_EXT)
+	CXX ?= $(DEVKITPPC)/bin/powerpc-eabi-g++$(EXE_EXT)
+	AR ?= $(DEVKITPPC)/bin/powerpc-eabi-gcc-ar$(EXE_EXT)
 	PLATFORM_DEFINES += -DGEKKO -DHW_RVL -mrvl -mcpu=750 -meabi -mhard-float
 	PLATFORM_DEFINES += -U__INT32_TYPE__ -U __UINT32_TYPE__ -D__INT32_TYPE__=int
 	STATIC_LINKING = 1
@@ -236,9 +236,9 @@ else ifeq ($(platform), wii)
 # Nintendo WiiU
 else ifeq ($(platform), wiiu)
 	TARGET := $(TARGET_NAME)_libretro_$(platform).a
-	CC = $(DEVKITPPC)/bin/powerpc-eabi-gcc$(EXE_EXT)
-	CXX = $(DEVKITPPC)/bin/powerpc-eabi-g++$(EXE_EXT)
-	AR = $(DEVKITPPC)/bin/powerpc-eabi-gcc-ar$(EXE_EXT)
+	CC ?= $(DEVKITPPC)/bin/powerpc-eabi-gcc$(EXE_EXT)
+	CXX ?= $(DEVKITPPC)/bin/powerpc-eabi-g++$(EXE_EXT)
+	AR ?= $(DEVKITPPC)/bin/powerpc-eabi-gcc-ar$(EXE_EXT)
 	PLATFORM_DEFINES += -DGEKKO -DWIIU -DHW_RVL -mwup -mcpu=750 -meabi -mhard-float
 	PLATFORM_DEFINES += -U__INT32_TYPE__ -U __UINT32_TYPE__ -D__INT32_TYPE__=int
 	STATIC_LINKING = 1
@@ -274,9 +274,9 @@ else ifeq ($(platform), emscripten)
 # GCW0
 else ifeq ($(platform), gcw0)
 	TARGET := $(TARGET_NAME)_libretro.so
-	CC = /opt/gcw0-toolchain/usr/bin/mipsel-linux-gcc
-	CXX = /opt/gcw0-toolchain/usr/bin/mipsel-linux-g++
-	AR = /opt/gcw0-toolchain/usr/bin/mipsel-linux-ar
+	CC ?= /opt/gcw0-toolchain/usr/bin/mipsel-linux-gcc
+	CXX ?= /opt/gcw0-toolchain/usr/bin/mipsel-linux-g++
+	AR ?= /opt/gcw0-toolchain/usr/bin/mipsel-linux-ar
 	fpic := -fPIC
 	SHARED := -shared -Wl,-version-script=$(version_script)
 	PLATFORM_DEFINES := -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
@@ -286,8 +286,8 @@ else ifeq ($(platform), gcw0)
 # Windows
 else
 	TARGET := $(TARGET_NAME)_libretro.dll
-	CC = gcc
-	CXX = g++
+	CC ?= gcc
+	CXX ?= g++
 	SHARED := -shared -static-libgcc -static-libstdc++ -Wl,-no-undefined -Wl,-version-script=$(version_script)
    LDFLAGS := 
 
