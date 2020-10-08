@@ -289,7 +289,7 @@ else
 	CC = gcc
 	CXX = g++
 	SHARED := -shared -static-libgcc -static-libstdc++ -Wl,-no-undefined -Wl,-version-script=$(version_script)
-   LDFLAGS := -lws2_32
+   LDFLAGS := 
 
 endif
 
