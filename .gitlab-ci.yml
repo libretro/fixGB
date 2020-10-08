@@ -5,8 +5,6 @@
 include:
   - template: Jobs/Code-Quality.gitlab-ci.yml
   - project: 'libretro-infrastructure/ci-templates'
-    file: '/vita-static.yml'
-  - project: 'libretro-infrastructure/ci-templates'
     file: '/linux-x64.yml'
   - project: 'libretro-infrastructure/ci-templates'
     file: '/windows-x64-mingw.yml'
@@ -30,15 +28,6 @@ libretro-build-windows-x64:
   extends:
     - .core-defs
     - .libretro-windows-x64-mingw-make-default
-  variables:
-    MAKEFILE_PATH: libretro
-    MAKEFILE: Makefile
-    
-# Static
-libretro-build-vita:
-  extends:
-    - .core-defs
-    - .libretro-vita-static-retroarch-master
   variables:
     MAKEFILE_PATH: libretro
     MAKEFILE: Makefile
