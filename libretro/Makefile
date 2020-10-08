@@ -206,9 +206,9 @@ else ifeq ($(platform), rpi3)
 # Xbox 360
 else ifeq ($(platform), xenon)
 	TARGET := $(TARGET_NAME)_libretro_xenon360.a
-	CC = xenon-gcc$(EXE_EXT)
-	CXX = xenon-g++$(EXE_EXT)
-	AR = xenon-ar$(EXE_EXT)
+	CC ?= xenon-gcc$(EXE_EXT)
+	CXX ?= xenon-g++$(EXE_EXT)
+	AR ?= xenon-ar$(EXE_EXT)
 	PLATFORM_DEFINES := -D__LIBXENON__
 	STATIC_LINKING = 1
 
