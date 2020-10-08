@@ -32,22 +32,10 @@ extern uint32_t textureImage[0x5A00];
 extern volatile bool emuRenderFrame;
 extern const char *VERSION_STRING;
 
-void memSaveGame()
-{
-
-}
-int audioInit()
-{
-
-}
-void audioDeinit()
-{
-
-}
-void audioSleep()
-{
-
-}
+void memSaveGame(void) { }
+int audioInit(void) { }
+void audioDeinit(void) { }
+void audioSleep(void) { }
 
 void retro_get_system_info(struct retro_system_info *info)
 {
@@ -77,7 +65,7 @@ void retro_init(void)
       log_cb = log.log;
 }
 
-void retro_deinit()
+void retro_deinit(void)
 {
 }
 
@@ -106,32 +94,12 @@ void retro_set_input_state(retro_input_state_t cb)
 
 void retro_set_controller_port_device(unsigned port, unsigned device) {}
 
-void retro_reset()
-{
-}
-
-size_t retro_serialize_size(void)
-{
-   return 0;
-}
-
-bool retro_serialize(void *data, size_t size)
-{
-   return false;
-}
-
-bool retro_unserialize(const void *data, size_t size)
-{
-   return false;
-}
-void retro_cheat_reset()
-{
-}
-
-void retro_cheat_set(unsigned index, bool enabled, const char *code)
-{
-}
-
+void retro_reset(void) { }
+size_t retro_serialize_size(void) { return 0; }
+bool retro_serialize(void *data, size_t size) { return false; }
+bool retro_unserialize(const void *data, size_t size) { return false; }
+void retro_cheat_reset(void) { }
+void retro_cheat_set(unsigned index, bool enabled, const char *code) { }
 
 bool retro_load_game(const struct retro_game_info *info)
 {
@@ -175,22 +143,16 @@ bool retro_load_game(const struct retro_game_info *info)
 }
 
 
-bool retro_load_game_special(unsigned game_type, const struct retro_game_info *info,
-                             size_t num_info)
-
+bool retro_load_game_special(unsigned game_type,
+      const struct retro_game_info *info,
+      size_t num_info)
 {
    return false;
 }
 
-void retro_unload_game()
-{
-   gbEmuDeinit();
-}
+void retro_unload_game(void) { gbEmuDeinit(); }
 
-unsigned retro_get_region()
-{
-   return RETRO_REGION_NTSC;
-}
+unsigned retro_get_region(void) { return RETRO_REGION_NTSC; }
 
 extern bool emuSaveEnabled;
 extern char emuSaveName[1024];
@@ -219,7 +181,7 @@ size_t retro_get_memory_size(unsigned id)
    return 0;
 }
 
-int audioUpdate()
+int audioUpdate(void)
 {
 #if 0
 #if AUDIO_FLOAT
@@ -257,7 +219,8 @@ int audioUpdate()
    return 1;
 }
 
-void apuFrameEnd();
+void apuFrameEnd(void);
+
 void audioFrameEnd(int samples)
 {
 #if AUDIO_FLOAT
@@ -275,7 +238,7 @@ void audioFrameEnd(int samples)
 }
 
 static char cgbRomPath[4096];
-FILE *doOpenCGBBootrom()
+FILE *doOpenCGBBootrom(void)
 {
    const char *dir = NULL;
    if(!environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) || !dir)
@@ -285,7 +248,7 @@ FILE *doOpenCGBBootrom()
    return f;
 }
 
-void retro_run()
+void retro_run(void)
 {
    input_poll_cb();
 
@@ -306,7 +269,7 @@ void retro_run()
    emuRenderFrame = false;
 }
 
-unsigned retro_api_version()
+unsigned retro_api_version(void)
 {
    return RETRO_API_VERSION;
 }

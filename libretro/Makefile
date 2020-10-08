@@ -140,9 +140,9 @@ else ifeq ($(platform), psp1)
 # Vita
 else ifeq ($(platform), vita)
 	TARGET := $(TARGET_NAME)_libretro_$(platform).a
-	CC = arm-vita-eabi-gcc$(EXE_EXT)
-	CXX = arm-vita-eabi-g++$(EXE_EXT)
-	AR = arm-vita-eabi-ar$(EXE_EXT)
+	CC ?= arm-vita-eabi-gcc$(EXE_EXT)
+	CXX ?= arm-vita-eabi-g++$(EXE_EXT)
+	AR ?= arm-vita-eabi-ar$(EXE_EXT)
 	PLATFORM_DEFINES := -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
 	CFLAGS += -DVITA
 	CXXFLAGS += -DVITA
@@ -369,7 +369,7 @@ $(TARGET): $(OBJS)
 ifeq ($(STATIC_LINKING), 1)
 	$(AR) rcs $@ $(OBJS)
 else
-	$(CXX) -o $@ $(SHARED) $(OBJS) $(LDFLAGS) $(LIBS)
+	$(CC) -o $@ $(SHARED) $(OBJS) $(LDFLAGS) $(LIBS)
 endif
 
 
