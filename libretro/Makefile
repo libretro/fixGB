@@ -319,17 +319,16 @@ endif
 
 CXXFLAGS += -std=c++98
 
-CORE_DIR := libgambatte/src
+CORE_DIR := ..
 
-OBJS :=
-OBJS += libretro.o
-OBJS += ../main.o
-OBJS += ../apu.o
-OBJS += ../cpu.o
-OBJS += ../input.o
-OBJS += ../mbc.o
-OBJS += ../mem.o
-OBJS += ../ppu.o
+OBJS := $(CORE_DIR)/libretro/libretro.o \
+        $(CORE_DIR)/main.o \
+        $(CORE_DIR)/apu.o \
+	$(CORE_DIR)/cpu.o \
+	$(CORE_DIR)/input.o \
+	$(CORE_DIR)/mbc.o \
+	$(CORE_DIR)/mem.o \
+	$(CORE_DIR)/ppu.o
 
 DEFINES  += -D__LIBRETRO__ $(PLATFORM_DEFINES)
 INCFLAGS += -I. -I..
