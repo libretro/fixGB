@@ -30,14 +30,6 @@ endif
 
 version_script = link.T
 
-ifeq ($(ARCHFLAGS),)
-ifeq ($(archs),ppc)
-   ARCHFLAGS = -arch ppc -arch ppc64
-else
-   ARCHFLAGS = -arch i386 -arch x86_64
-endif
-endif
-
 # Unix
 ifeq ($(platform), unix)
 	TARGET := $(TARGET_NAME)_libretro.so
@@ -52,11 +44,6 @@ else ifeq ($(platform), osx)
 	OSXVER = `sw_vers -productVersion | cut -d. -f 2`
 	OSX_LT_MAVERICKS = `(( $(OSXVER) <= 9)) && echo "YES"`
 	#fpic += -mmacosx-version-min=10.1
-	ifndef ($(NOUNIVERSAL))
-		CFLAGS += $(ARCHFLAGS)
-		CXXFLAGS += $(ARCHFLAGS)
-		LDFLAGS += $(ARCHFLAGS)
-	endif
 
 # iOS
 else ifneq (,$(findstring ios,$(platform)))
@@ -339,8 +326,6 @@ CXXFLAGS += $(fpic) $(DEFINES) -Werror=implicit-function-declaration
 
 LIBS :=
 
-LDFLAGS += -Wl,--no-undefined
-
 %.o: %.cpp
 	$(CXX) -c -o $@ $< $(CXXFLAGS) $(INCFLAGS)
 
@@ -355,14 +340,6 @@ ${LIBRARY_NAME}_FILES = $(SOURCES_CXX) $(SOURCES_C)
 include $(THEOS_MAKE_PATH)/library.mk
 else
 all: $(TARGET)
-
-ifeq ($(platform), osx)
-ifndef ($(NOUNIVERSAL))
-   CFLAGS += $(ARCHFLAGS)
-   CXXFLAGS += $(ARCHFLAGS)
-   LFLAGS += $(ARCHFLAGS)
-endif
-endif
 
 $(TARGET): $(OBJS)
 ifeq ($(STATIC_LINKING), 1)
