@@ -45,26 +45,58 @@ else ifeq ($(platform), osx)
 	OSX_LT_MAVERICKS = `(( $(OSXVER) <= 9)) && echo "YES"`
 	#fpic += -mmacosx-version-min=10.1
 
+   ifeq ($(CROSS_COMPILE),1)
+        TARGET_RULE   = -target $(LIBRETRO_APPLE_PLATFORM) -isysroot $(LIBRETRO_APPLE_ISYSROOT)
+        CFLAGS   += $(TARGET_RULE)
+        CPPFLAGS += $(TARGET_RULE)
+        CXXFLAGS += $(TARGET_RULE)
+        LDFLAGS  += $(TARGET_RULE)
+   endif
+
+   ifndef ($(NOUNIVERSAL))
+      CFLAGS  += $(ARCHFLAGS)
+      LDFLAGS += $(ARCHFLAGS)
+   endif
+
 # iOS
 else ifneq (,$(findstring ios,$(platform)))
+   TARGET := $(TARGET_NAME)_libretro_ios.dylib
+   fpic := -fPIC
+   SHARED := -dynamiclib
+   MINVERSION :=
 
-	TARGET := $(TARGET_NAME)_libretro_ios.dylib
-	fpic := -fPIC
-	SHARED := -dynamiclib
-	ifeq ($(IOSSDK),)
-		IOSSDK := $(shell xcodebuild -version -sdk iphoneos Path)
-	endif
-	CC = cc -arch armv7 -isysroot $(IOSSDK)
-	CXX = c++ -arch armv7 -isysroot $(IOSSDK)
-ifeq ($(platform),ios9)
-	CC += -miphoneos-version-min=8.0
-	CXX += -miphoneos-version-min=8.0
-	PLATFORM_DEFINES := -miphoneos-version-min=8.0
-else
-	CC += -miphoneos-version-min=5.0
-	CXX += -miphoneos-version-min=5.0
-	PLATFORM_DEFINES := -miphoneos-version-min=5.0
-endif
+   ifeq ($(IOSSDK),)
+      IOSSDK := $(shell xcrun -sdk iphoneos -show-sdk-path)
+   endif
+
+   ifeq ($(platform),ios-arm64)
+      CC = cc -arch arm64 -isysroot $(IOSSDK)
+      CXX = c++ -arch arm64 -isysroot $(IOSSDK)
+   else
+      CC = cc -arch armv7 -isysroot $(IOSSDK)
+      CXX = c++ -arch arm64 -isysroot $(IOSSDK)
+   endif
+   ifeq ($(platform),$(filter $(platform),ios9 ios-arm64))
+        MINVERSION = -miphoneos-version-min=8.0
+   else
+        MINVERSION = -miphoneos-version-min=5.0
+   endif
+        PLATFORM_DEFINES += $(MINVERSION)
+
+# tvOS
+else ifeq ($(platform), tvos-arm64)
+   TARGET := $(TARGET_NAME)_libretro_tvos.dylib
+   fpic := -fPIC
+   SHARED := -dynamiclib
+   ENDIANNESS_DEFINES := -DLSB_FIRST -DBYTE_ORDER=LITTLE_ENDIAN
+   PLATFORM_DEFINES := -DHAVE_ZLIB
+
+   ifeq ($(IOSSDK),)
+      IOSSDK := $(shell xcrun -sdk appletvos -show-sdk-path)
+   endif
+
+   CC = cc -arch arm64 -isysroot $(IOSSDK)
+   CXX = c++ -arch arm64 -isysroot $(IOSSDK)
 
 # Theos
 else ifeq ($(platform), theos_ios)
